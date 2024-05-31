@@ -1,19 +1,21 @@
-// script.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const jobListingsContainer = document.getElementById("job-listings");
+  const filterContainer = document.querySelector(".filter-container");
+  const filterTagsContainer = document.querySelector(".filter-tags");
+  const clearFiltersBtn = document.querySelector(".clear-filters");
 
-  // Fetch data from JSON file
+  let jobsData = [];
+  let activeFilters = [];
+
   fetch("data.json")
     .then((response) => response.json())
     .then((data) => {
-      displayJobListings(data);
-      addFiltering(data);
+      jobsData = data;
+      displayJobListings(jobsData);
     });
 
-  // Display job listings
   function displayJobListings(jobs) {
-    jobListingsContainer.innerHTML = ""; // Clear existing listings
+    jobListingsContainer.innerHTML = "";
 
     jobs.forEach((job) => {
       const jobElement = document.createElement("div");
@@ -22,17 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
       jobElement.innerHTML = `
           <div class="job-header">
             <img src="${job.logo}" alt="${job.company} Logo">
-            <div>
+            <div class="job-info">
               <span>${job.company}</span>
               <h2>${job.position}${
         job.new ? '<span class="new">NEW!</span>' : ""
-      }</h2>
+      }${job.featured ? '<span class="featured">FEATURED</span>' : ""}</h2>
+              <div class="job-details">
+                <span>${job.postedAt}</span>
+                <span>${job.contract}</span>
+                <span>${job.location}</span>
+              </div>
             </div>
-          </div>
-          <div class="job-details">
-            <span>${job.postedAt}</span>
-            <span>${job.contract}</span>
-            <span>${job.location}</span>
           </div>
           <div class="job-tags">
             ${[job.role, job.level, ...job.languages, ...job.tools]
@@ -42,27 +44,59 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
       jobListingsContainer.appendChild(jobElement);
-    });
-  }
 
-  // Add filtering functionality
-  function addFiltering(jobs) {
-    const filterInput = document.createElement("input");
-    filterInput.type = "text";
-    filterInput.placeholder = "Filter by category";
-    filterInput.addEventListener("input", (e) => {
-      const filteredJobs = jobs.filter((job) => {
-        const tags = [job.role, job.level, ...job.languages, ...job.tools];
-        return tags.some((tag) =>
-          tag.toLowerCase().includes(e.target.value.toLowerCase())
-        );
+      const tags = jobElement.querySelectorAll(".job-tag");
+      tags.forEach((tag) => {
+        tag.addEventListener("click", () => {
+          if (!activeFilters.includes(tag.textContent)) {
+            activeFilters.push(tag.textContent);
+            updateFilters();
+            filterJobs();
+          }
+        });
       });
-      displayJobListings(filteredJobs);
+    });
+  }
+
+  function updateFilters() {
+    filterTagsContainer.innerHTML = activeFilters
+      .map(
+        (filter) => `
+        <div class="filter-tag">
+          ${filter}
+          <span class="remove-tag" data-filter="${filter}">×</span>
+        </div>
+      `
+      )
+      .join("");
+
+    const removeTags = filterTagsContainer.querySelectorAll(".remove-tag");
+    removeTags.forEach((removeTag) => {
+      removeTag.addEventListener("click", () => {
+        activeFilters = activeFilters.filter(
+          (f) => f !== removeTag.getAttribute("data-filter")
+        );
+        updateFilters();
+        filterJobs();
+      });
     });
 
-    jobListingsContainer.parentElement.insertBefore(
-      filterInput,
-      jobListingsContainer
-    );
+    filterContainer.style.display = activeFilters.length ? "flex" : "none";
   }
+
+  function filterJobs() {
+    const filteredJobs = jobsData.filter((job) => {
+      const tags = [job.role, job.level, ...job.languages, ...job.tools];
+      return activeFilters.every((filter) => tags.includes(filter));
+    });
+    displayJobListings(filteredJobs);
+  }
+
+  clearFiltersBtn.addEventListener("click", () => {
+    activeFilters = [];
+    updateFilters();
+    displayJobListings(jobsData);
+  });
+
+  updateFilters();
 });

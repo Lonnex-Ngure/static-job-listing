@@ -29,7 +29,6 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
 }
 
 .job-container:hover {
@@ -39,8 +38,6 @@ main {
 .job-header {
   display: flex;
   align-items: center;
-  flex: 1 1 50%;
-  max-width: 50%;
 }
 
 .job-header img {
@@ -50,20 +47,35 @@ main {
   border-radius: 50%;
 }
 
-.job-header div {
+.job-info {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
-.job-header h2 {
+.job-info span {
+  color: #5ba4a4;
+  font-weight: bold;
+}
+
+.job-info h2 {
   margin: 0;
   font-size: 1.5em;
   display: flex;
   align-items: center;
 }
 
-.job-header h2 .new {
+.job-info h2 .new {
   background: #5ba4a4;
+  color: white;
+  font-size: 0.75em;
+  padding: 5px 10px;
+  border-radius: 12px;
+  margin-left: 10px;
+}
+
+.job-info h2 .featured {
+  background: #2c3a3a;
   color: white;
   font-size: 0.75em;
   padding: 5px 10px;
@@ -75,9 +87,6 @@ main {
   margin-top: 10px;
   font-size: 0.9em;
   color: #7b8e8e;
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
 }
 
 .job-details span {
@@ -86,10 +95,9 @@ main {
 
 .job-tags {
   display: flex;
-  flex-wrap: wrap;
   justify-content: flex-end;
-  align-items: center; 
-  margin-left: auto;
+  align-items: center;
+  flex: 0 0 auto;
 }
 
 .job-tag {
@@ -102,7 +110,57 @@ main {
   cursor: pointer;
 }
 
-.job-tag:hover {
+.job-tag:hover,
+.job-tag.active {
   background: #5ba4a4;
   color: white;
+}
+
+.filter-container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  width: 90%;
+  max-width: 1100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-tag {
+  background: #eef6f6;
+  color: #5ba4a4;
+  font-weight: bold;
+  margin: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.filter-tag .remove-tag {
+  background: #5ba4a4;
+  color: white;
+  margin-left: 10px;
+  padding: 0 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.clear-filters {
+  color: #5ba4a4;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.clear-filters:hover {
+  text-decoration: underline;
 }
