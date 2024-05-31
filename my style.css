@@ -87,8 +87,8 @@ main {
 .job-tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end; /* Align tags to the right */
-  align-items: center; /* Vertically center tags */
+  justify-content: flex-end;
+  align-items: center; 
   margin-left: auto;
 }
 
