@@ -164,3 +164,60 @@ main {
 .clear-filters:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+  .job-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .job-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .job-header img {
+    margin-bottom: 15px;
+  }
+
+  .job-info h2 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .job-details {
+    margin-top: 5px;
+  }
+
+  .job-tags {
+    justify-content: flex-start;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .clear-filters {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 10px;
+  }
+
+  .job-container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .filter-container {
+    width: 100%;
+    padding: 10px;
+  }
+}
